@@ -40,7 +40,14 @@ def read_transactions(content, ptr):
             continue
         fc, addr_bus, bw, data_bus = unpack_from("<IIII", content, ptr)
         ptr += 16
-        transactions.append(['r' if tw == 2 else 'w' if tw == 1 else 't', cycles, fc, addr_bus, '.w' if bw == 1 else '.b', data_bus])
+        if tw == 1:
+            tws = 'w'
+        elif tw == 2:
+            tws = 'r'
+        else:
+            print('WHAT>', tw)
+            tws = 't'
+        transactions.append([tws, cycles, fc, addr_bus, '.w' if bw == 1 else '.b', data_bus])
 
     return ptr, transactions, num_cycles
 
