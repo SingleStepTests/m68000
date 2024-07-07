@@ -5,7 +5,8 @@ import json
 from struct import unpack_from
 from typing import Dict, Any
 
-M68K_JSON_PATH = os.path.expanduser('~') + '/dev/m68000_json/v1'
+PRINTED_YET = 0
+M68K_JSON_PATH = os.getcwd() + '/v1'
 REG_ORDER = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7',
              'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'usp',
              'ssp', 'sr', 'pc'
@@ -31,6 +32,9 @@ def read_transactions(content, ptr):
     ptr += 8
     transactions = []
     num_cycles, num_transactions = unpack_from("<II", content, ptr)
+    if num_cycles == 0:
+        global PRINTED_YET
+        PRINTED_YET += 1
     ptr += 8
     for i in range(0, num_transactions):
         tw, cycles = unpack_from("<BI", content, ptr)
@@ -97,6 +101,7 @@ def decode_test(content, ptr):
 
 def decode_file(infilename, outfilename):
     print('DECODE', infilename)
+    global PRINTED_YET
     with open(infilename, 'rb') as infile:
         content = infile.read()
     ptr = 0
@@ -105,9 +110,12 @@ def decode_file(infilename, outfilename):
     ptr += 8
     tests = []
 
+    PRINTED_YET = 0
     for i in range(0, num_tests):
         ptr, test = decode_test(content, ptr)
         tests.append(test)
+    if PRINTED_YET > 0:
+        print('NUM WITH NO CYCLES: ', PRINTED_YET)
     if os.path.exists(outfilename):
         os.unlink(outfilename)
     with open(outfilename, 'w') as outfile:
