@@ -42,16 +42,16 @@ def read_transactions(content, ptr):
         if tw == 0:
             transactions.append(['n', cycles])
             continue
-        fc, addr_bus, bw, data_bus = unpack_from("<IIII", content, ptr)
-        ptr += 16
+        fc, addr_bus, data_bus, UDS, LDS = unpack_from("<IIIII", content, ptr)
+        bw = UDS + LDS
+        ptr += 20
         if tw == 1:
             tws = 'w'
         elif tw == 2:
             tws = 'r'
         else:
-            print('WHAT>', tw)
             tws = 't'
-        transactions.append([tws, cycles, fc, addr_bus, '.w' if bw == 1 else '.b', data_bus])
+        transactions.append([tws, cycles, fc, addr_bus, '.w' if bw == 2 else '.b', data_bus, UDS, LDS])
 
     return ptr, transactions, num_cycles
 

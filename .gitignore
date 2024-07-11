@@ -1,3 +1,4 @@
 *.json
 .idea
 bad.py
+bad.c
