@@ -1,7 +1,13 @@
 # m68000
 Repository for TomHarte-style JSON tests for the Motorola 68000. Generated using the microcoded core in MAME.
 
-STATUS: at least some have been verified as good. There may be bad edge cases but for the most part it's looking good. 
+STATUS: all of the tests except TAS and TRAPV are verified as good.
+
+Caveats:
+
+* TAS doesn't properly handle the special 5-cycle TAS read-modify-write timing.
+* There's some strange issue I don't understand with the TRAPV tests. Or maybe I'm just interpreting them wrong.
+* Any bugs that exist in Mame's microcoded M68000 emulator will exist here too
 
 Use decode.py to convert from .json.bin to .json.
 
@@ -14,4 +20,4 @@ They are in ALMOST the same format as the TomHarte tests, just generated with a 
 
 These may not be the final form; I may add new features, or adjust so that certain things go better, etc., but they're worth using now.
 
-Thanks to the MAME project for the awesome microcoded emulator!
+Thanks to the MAME project for the awesome microcoded emulator! Thanks to TomHarte for the idea for the JSOn tests!
