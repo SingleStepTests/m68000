@@ -45,12 +45,18 @@ def read_transactions(content, ptr):
         fc, addr_bus, data_bus, UDS, LDS = unpack_from("<IIIII", content, ptr)
         bw = UDS + LDS
         ptr += 20
-        if tw == 1:
+        if tw == 1: # write
             tws = 'w'
-        elif tw == 2:
+        elif tw == 2: # read
             tws = 'r'
-        else:
+        elif tw == 3: # TAS cycle
             tws = 't'
+        elif tw == 4: # read address error (no AS assert)
+            tws = 're'
+        elif tw == 5:  # write address error (no AS assert)
+            tws = 'we'
+        else:
+            raise Exception('BAD KIND')
         transactions.append([tws, cycles, fc, addr_bus, '.w' if bw == 2 else '.b', data_bus, UDS, LDS])
 
     return ptr, transactions, num_cycles
