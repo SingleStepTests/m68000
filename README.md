@@ -5,6 +5,7 @@ STATUS: all of the tests except TAS and TRAPV are verified as good.
 
 Caveats:
 
+* Read and write cycles do NOT take effect on real hardware if there's an address error. On the real CPU it appears that AS is never asserted, and DTACK/VPA isn't waited for. I'm leaving the tests how they are to make it as simple as possible to test such errors, though
 * TAS doesn't properly handle the special 5-cycle TAS read-modify-write timing.
 * There's some strange issue I don't understand with the TRAPV tests. Or maybe I'm just interpreting them wrong.
 * Any bugs that exist in Mame's microcoded M68000 emulator will exist here too
