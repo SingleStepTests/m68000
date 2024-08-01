@@ -134,6 +134,9 @@ def do_path(where):
     for fname in fs:
         decode_file(fname, fname[:-4])
 
+    #r = M68K_JSON_PATH + "/NEG.b.json.bin"
+    #decode_file(r, r[:-4])
+
 
 def main():
     do_path(M68K_JSON_PATH)
